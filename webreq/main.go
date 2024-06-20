@@ -24,6 +24,6 @@ func main() {
 		 fmt.Println("Error reading response", err)
 		 return 
 	}
-
+  // convert into string 
 	fmt.Println("response: ", string(data));
 }
