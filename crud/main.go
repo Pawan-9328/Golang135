@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	//"io/ioutil"
+	"strings"
+
+	//"io/ioutil"
 	"net/http"
 )
 
@@ -14,9 +17,7 @@ type Todo struct {
 	Completed bool   `json "completed"`
 }
 
-func main() {
-	fmt.Println("CRUD")
-
+func performGetRequest() {
 	res, err := http.Get("https://www.google.com/")
 	if err != nil {
 		fmt.Println("Error getting : ", err)
@@ -48,4 +49,41 @@ func main() {
 	fmt.Println("completed response : ", todo.Completed)
 }
 
+func performPostRequest() {
+	todo := Todo{
+		//UserId: 23,
+		Title:     "keshav",
+		Completed: true}
+
+	// convert the Todo struct to JSON
+	jsonData, err := json.Marshal(todo)
+	if err != nil {
+		fmt.Println("Error marshling", err)
+		return
+	}
+
+	// convert json data to string
+	jsonString := string(jsonData)
+
+	// convert string data to reader
+	jsonReader := strings.NewReader(jsonString)
+	myURL := ""
+	res, err := http.Post(myURL, "application/json", jsonReader)
+	if err != nil {
+		fmt.Println("Error sending request : ", err)
+	}
+	defer res.Body.Close()
+
+	// data, _ := ioutil.ReadAll(res.Body)
+	// fmt.Println("Response : ", string(data))
+
+	 fmt.Println("response status :", res.Status)
+}
+
+func main() {
+	fmt.Println("CRUD")
+	performGetRequest()
+	performPostRequest()
+
+}
 
